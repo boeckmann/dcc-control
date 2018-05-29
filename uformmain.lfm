@@ -1,0 +1,78 @@
+object FormMain: TFormMain
+  Left = 101
+  Height = 63
+  Top = 80
+  Width = 422
+  Caption = 'BernDCC Zentrale'
+  ClientHeight = 63
+  ClientWidth = 422
+  OnCreate = FormCreate
+  LCLVersion = '1.8.2.0'
+  object tbEStop: TToggleBox
+    Left = 8
+    Height = 25
+    Top = 8
+    Width = 75
+    Caption = 'Nothalt!'
+    Font.Color = clRed
+    OnChange = tbEStopChange
+    ParentFont = False
+    TabOrder = 1
+    TabStop = False
+  end
+  object Button1: TButton
+    Tag = 1
+    Left = 96
+    Height = 25
+    Top = 8
+    Width = 75
+    Caption = 'Zug 1'
+    OnClick = ButtonTrainClick
+    TabOrder = 0
+  end
+  object Button2: TButton
+    Tag = 2
+    Left = 176
+    Height = 25
+    Top = 8
+    Width = 75
+    Caption = 'Zug 2'
+    OnClick = ButtonTrainClick
+    TabOrder = 4
+    TabStop = False
+  end
+  object Button3: TButton
+    Tag = 3
+    Left = 256
+    Height = 25
+    Top = 8
+    Width = 75
+    Caption = 'Zug 3'
+    OnClick = ButtonTrainClick
+    TabOrder = 2
+    TabStop = False
+  end
+  object Button4: TButton
+    Tag = 4
+    Left = 336
+    Height = 25
+    Top = 8
+    Width = 75
+    Caption = 'Zug 4'
+    OnClick = ButtonTrainClick
+    TabOrder = 3
+    TabStop = False
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Height = 23
+    Top = 40
+    Width = 422
+    Panels = <    
+      item
+        Text = 'OK'
+        Width = 50
+      end>
+    SimplePanel = False
+  end
+end
