@@ -13,10 +13,14 @@ type
   { TFormMain }
 
   TFormMain = class(TForm)
-    Button1: TButton;
-    Button2: TButton;
-    Button3: TButton;
-    Button4: TButton;
+    BtnT1: TButton;
+    BtnT2: TButton;
+    BtnT3: TButton;
+    BtnT4: TButton;
+    BtnT5: TButton;
+    BtnT6: TButton;
+    BtnT7: TButton;
+    BtnT8: TButton;
     StatusBar1: TStatusBar;
     tbEStop: TToggleBox;
     procedure ButtonTrainClick(Sender: TObject);

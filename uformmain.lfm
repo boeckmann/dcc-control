@@ -1,18 +1,25 @@
 object FormMain: TFormMain
-  Left = 101
-  Height = 63
-  Top = 80
-  Width = 422
+  AnchorSideRight.Side = asrBottom
+  Left = 268
+  Height = 126
+  Top = 206
+  Width = 975
+  BorderStyle = bsSingle
   Caption = 'BernDCC Zentrale'
-  ClientHeight = 63
-  ClientWidth = 422
+  ClientHeight = 126
+  ClientWidth = 975
+  DesignTimePPI = 192
   OnCreate = FormCreate
-  LCLVersion = '1.8.2.0'
+  LCLVersion = '1.9.0.0'
   object tbEStop: TToggleBox
-    Left = 8
-    Height = 25
-    Top = 8
-    Width = 75
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    Left = 16
+    Height = 50
+    Top = 16
+    Width = 150
+    BorderSpacing.Right = 16
+    BorderSpacing.Around = 16
     Caption = 'Nothalt!'
     Font.Color = clRed
     OnChange = tbEStopChange
@@ -20,59 +27,157 @@ object FormMain: TFormMain
     TabOrder = 1
     TabStop = False
   end
-  object Button1: TButton
+  object BtnT1: TButton
     Tag = 1
-    Left = 96
-    Height = 25
-    Top = 8
-    Width = 75
+    AnchorSideLeft.Control = tbEStop
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Owner
+    AnchorSideBottom.Control = StatusBar1
+    Left = 198
+    Height = 51
+    Top = 16
+    Width = 81
+    BorderSpacing.Around = 16
     Caption = 'Zug 1'
     OnClick = ButtonTrainClick
+    ParentFont = False
     TabOrder = 0
   end
-  object Button2: TButton
+  object BtnT2: TButton
     Tag = 2
-    Left = 176
-    Height = 25
-    Top = 8
-    Width = 75
+    AnchorSideLeft.Control = BtnT1
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = BtnT3
+    Left = 295
+    Height = 51
+    Top = 16
+    Width = 81
+    AutoSize = True
+    BorderSpacing.Around = 16
     Caption = 'Zug 2'
     OnClick = ButtonTrainClick
-    TabOrder = 4
+    ParentFont = False
+    TabOrder = 8
     TabStop = False
   end
-  object Button3: TButton
+  object BtnT3: TButton
     Tag = 3
-    Left = 256
-    Height = 25
-    Top = 8
-    Width = 75
+    AnchorSideLeft.Control = BtnT2
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Owner
+    Left = 392
+    Height = 51
+    Top = 16
+    Width = 81
+    AutoSize = True
+    BorderSpacing.Around = 16
     Caption = 'Zug 3'
     OnClick = ButtonTrainClick
+    ParentFont = False
     TabOrder = 2
     TabStop = False
   end
-  object Button4: TButton
+  object BtnT4: TButton
     Tag = 4
-    Left = 336
-    Height = 25
-    Top = 8
-    Width = 75
+    AnchorSideLeft.Control = BtnT3
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Owner
+    Left = 489
+    Height = 51
+    Top = 16
+    Width = 81
+    AutoSize = True
+    BorderSpacing.Around = 16
     Caption = 'Zug 4'
     OnClick = ButtonTrainClick
-    TabOrder = 3
+    ParentFont = False
+    TabOrder = 7
     TabStop = False
   end
   object StatusBar1: TStatusBar
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideBottom.Control = Owner
     Left = 0
-    Height = 23
-    Top = 40
-    Width = 422
+    Height = 39
+    Top = 87
+    Width = 975
     Panels = <    
       item
         Text = 'OK'
-        Width = 50
+        Width = 100
       end>
+    ParentFont = False
     SimplePanel = False
+  end
+  object BtnT5: TButton
+    Tag = 4
+    AnchorSideLeft.Control = BtnT4
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Owner
+    Left = 586
+    Height = 51
+    Top = 16
+    Width = 81
+    AutoSize = True
+    BorderSpacing.Around = 16
+    Caption = 'Zug 5'
+    OnClick = ButtonTrainClick
+    ParentFont = False
+    TabOrder = 6
+    TabStop = False
+  end
+  object BtnT6: TButton
+    Tag = 4
+    AnchorSideLeft.Control = BtnT5
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Owner
+    Left = 683
+    Height = 51
+    Top = 16
+    Width = 81
+    AutoSize = True
+    BorderSpacing.Around = 16
+    Caption = 'Zug 6'
+    OnClick = ButtonTrainClick
+    ParentFont = False
+    TabOrder = 5
+    TabStop = False
+  end
+  object BtnT7: TButton
+    Tag = 4
+    AnchorSideLeft.Control = BtnT6
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Owner
+    Left = 780
+    Height = 51
+    Top = 16
+    Width = 81
+    AutoSize = True
+    BorderSpacing.Around = 16
+    Caption = 'Zug 7'
+    OnClick = ButtonTrainClick
+    ParentFont = False
+    TabOrder = 4
+    TabStop = False
+  end
+  object BtnT8: TButton
+    Tag = 4
+    AnchorSideLeft.Control = BtnT7
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Owner
+    Left = 877
+    Height = 51
+    Top = 16
+    Width = 81
+    AutoSize = True
+    BorderSpacing.Around = 16
+    Caption = 'Zug 8'
+    OnClick = ButtonTrainClick
+    ParentFont = False
+    TabOrder = 3
+    TabStop = False
   end
 end

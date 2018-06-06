@@ -53,6 +53,7 @@ var
   answer: String;
 
 begin
+  {$IFDEF COMM}
   SetLength(answer, 10);
   answer[1] := ' ';
   repeat
@@ -63,6 +64,7 @@ begin
   WriteLn('!' + answer[2]);
 
   Result := answer[2] = 'O';
+  {$ENDIF}
 
   if Result = false then FormMain.SetCommError;
 end;
@@ -74,9 +76,10 @@ begin
   s := '!' + cmd + #13 + #10;
 
   Write(s);
+  {$IFDEF COMM}
   SerWrite(serialHandle, s[1], length(s));
   SerSync(serialHandle);
-
+  {$ENDIF}
   Result := RecvAnswer();
 end;
 
@@ -88,8 +91,10 @@ begin
   s := Format('!%.3d%s'+#13+#10, [addr, cmd]);
 
   Write(s);
+  {$IFDEF COMM}
   SerWrite(serialHandle, s[1], length(s));
   SerSync(serialHandle);
+  {$ENDIF}
 
   Result := RecvAnswer();
 end;
@@ -99,8 +104,10 @@ var
   i: Integer;
 begin
   for i := low(trains) to high(trains) do trains[i] := TTrain.Create;
+  {$IFDEF COMM}
   serialHandle := SerOpen('/dev/ttyACM0');
   SerSetParams(serialHandle, 9600, 8, NoneParity, 1, []);
+  {$ENDIF}
 end;
 
 

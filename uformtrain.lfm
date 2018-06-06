@@ -1,35 +1,50 @@
 object FormTrain: TFormTrain
   Left = 454
-  Height = 386
+  Height = 799
   Top = 213
-  Width = 285
+  Width = 572
+  AutoSize = True
   BorderStyle = bsDialog
   Caption = 'Zug ?'
-  ClientHeight = 386
-  ClientWidth = 285
+  ClientHeight = 799
+  ClientWidth = 572
+  DesignTimePPI = 192
   OnCreate = FormCreate
   OnHide = FormHide
   OnKeyPress = FormKeyPress
   OnShow = FormShow
-  LCLVersion = '1.8.2.0'
+  LCLVersion = '1.9.0.0'
   object tbSpeed: TTrackBar
-    Left = 8
-    Height = 328
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 16
+    Height = 767
     Top = 16
-    Width = 49
+    Width = 50
     Max = 28
     OnChange = tbSpeedChange
     Orientation = trVertical
     Position = 0
     Reversed = True
+    Anchors = [akTop, akLeft, akBottom]
+    BorderSpacing.Around = 16
+    ParentFont = False
     TabOrder = 0
   end
   object CheckGroup1: TCheckGroup
-    Left = 71
-    Height = 152
-    Top = 192
-    Width = 201
+    AnchorSideLeft.Control = tbSpeed
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = rgDirection
+    AnchorSideTop.Side = asrBottom
+    Left = 82
+    Height = 219
+    Top = 371
+    Width = 319
     AutoFill = True
+    AutoSize = True
+    BorderSpacing.Around = 16
     Caption = 'Funktionen'
     ChildSizing.LeftRightSpacing = 6
     ChildSizing.TopBottomSpacing = 6
@@ -39,145 +54,185 @@ object FormTrain: TFormTrain
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 4
-    ClientHeight = 122
-    ClientWidth = 197
+    ClientHeight = 181
+    ClientWidth = 317
     Columns = 4
+    ParentFont = False
     TabOrder = 1
     object cbF1: TCheckBox
-      Left = 6
-      Height = 37
-      Top = 6
-      Width = 41
+      Left = 16
+      Height = 39
+      Top = 16
+      Width = 48
+      BorderSpacing.Around = 16
       Caption = 'f1'
+      ParentFont = False
       TabOrder = 8
       TabStop = False
     end
     object cbF2: TCheckBox
-      Left = 47
-      Height = 37
-      Top = 6
-      Width = 48
+      Left = 80
+      Height = 39
+      Top = 16
+      Width = 63
+      BorderSpacing.Around = 16
       Caption = 'f2'
+      ParentFont = False
       TabOrder = 9
       TabStop = False
     end
     object cbF3: TCheckBox
-      Left = 95
-      Height = 37
-      Top = 6
-      Width = 48
+      Left = 159
+      Height = 39
+      Top = 16
+      Width = 63
+      BorderSpacing.Around = 16
       Caption = 'f3'
+      ParentFont = False
       TabOrder = 10
       TabStop = False
     end
     object cbF4: TCheckBox
-      Left = 143
-      Height = 37
-      Top = 6
-      Width = 48
+      Left = 238
+      Height = 39
+      Top = 16
+      Width = 63
+      BorderSpacing.Around = 16
       Caption = 'f4'
+      ParentFont = False
       TabOrder = 11
       TabStop = False
     end
     object cbF5: TCheckBox
-      Left = 6
-      Height = 37
-      Top = 43
-      Width = 41
+      Left = 16
+      Height = 39
+      Top = 71
+      Width = 48
+      BorderSpacing.Around = 16
       Caption = 'f5'
+      ParentFont = False
       TabOrder = 5
       TabStop = False
     end
     object cbF6: TCheckBox
-      Left = 47
-      Height = 37
-      Top = 43
-      Width = 48
+      Left = 80
+      Height = 39
+      Top = 71
+      Width = 63
+      BorderSpacing.Around = 16
       Caption = 'f6'
+      ParentFont = False
       TabOrder = 6
       TabStop = False
     end
     object cbF7: TCheckBox
-      Left = 95
-      Height = 37
-      Top = 43
-      Width = 48
+      Left = 159
+      Height = 39
+      Top = 71
+      Width = 63
+      BorderSpacing.Around = 16
       Caption = 'f7'
+      ParentFont = False
       TabOrder = 7
       TabStop = False
     end
     object cbF8: TCheckBox
-      Left = 143
-      Height = 37
-      Top = 43
-      Width = 48
+      Left = 238
+      Height = 39
+      Top = 71
+      Width = 63
+      BorderSpacing.Around = 16
       Caption = 'f8'
+      ParentFont = False
       TabOrder = 4
       TabStop = False
     end
     object cbf9: TCheckBox
-      Left = 6
-      Height = 36
-      Top = 80
-      Width = 41
+      Left = 16
+      Height = 39
+      Top = 126
+      Width = 48
+      BorderSpacing.Around = 16
       Caption = 'f9'
+      ParentFont = False
       TabOrder = 3
       TabStop = False
     end
     object cbF10: TCheckBox
-      Left = 47
-      Height = 36
-      Top = 80
-      Width = 48
+      Left = 80
+      Height = 39
+      Top = 126
+      Width = 63
+      BorderSpacing.Around = 16
       Caption = 'f10'
+      ParentFont = False
       TabOrder = 2
       TabStop = False
     end
     object cbF11: TCheckBox
-      Left = 95
-      Height = 36
-      Top = 80
-      Width = 48
+      Left = 159
+      Height = 39
+      Top = 126
+      Width = 63
+      BorderSpacing.Around = 16
       Caption = 'f11'
+      ParentFont = False
       TabOrder = 1
       TabStop = False
     end
     object cbF12: TCheckBox
-      Left = 143
-      Height = 36
-      Top = 80
-      Width = 48
+      Left = 238
+      Height = 39
+      Top = 126
+      Width = 63
+      BorderSpacing.Around = 16
       Caption = 'f12'
+      ParentFont = False
       TabOrder = 0
       TabStop = False
     end
   end
   object cbF0: TCheckBox
-    Left = 71
-    Height = 22
-    Top = 352
-    Width = 81
+    AnchorSideLeft.Control = tbSpeed
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = CheckGroup1
+    AnchorSideTop.Side = asrBottom
+    Left = 82
+    Height = 39
+    Top = 606
+    Width = 132
+    BorderSpacing.Around = 16
     Caption = 'Licht / f0'
     OnChange = cbF0Change
+    ParentFont = False
     TabOrder = 3
     TabStop = False
   end
   object lblSpeed: TLabel
-    Left = 71
-    Height = 88
+    AnchorSideLeft.Control = tbSpeed
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Owner
+    Left = 82
+    Height = 175
     Top = 0
-    Width = 37
+    Width = 73
     Caption = '0'
-    Font.Height = 64
+    Font.Height = 128
     ParentColor = False
     ParentFont = False
   end
   object rgDirection: TRadioGroup
-    Left = 72
-    Height = 88
-    Top = 96
-    Width = 200
+    AnchorSideLeft.Control = tbSpeed
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = lblSpeed
+    AnchorSideTop.Side = asrBottom
+    Left = 82
+    Height = 164
+    Top = 191
+    Width = 182
     AutoFill = True
+    AutoSize = True
+    BorderSpacing.Around = 16
     Caption = 'Fahrtrichtung'
     ChildSizing.LeftRightSpacing = 6
     ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
@@ -186,49 +241,66 @@ object FormTrain: TFormTrain
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 1
-    ClientHeight = 58
-    ClientWidth = 196
+    ClientHeight = 126
+    ClientWidth = 180
+    ParentFont = False
     TabOrder = 2
     object rbForward: TRadioButton
-      Left = 6
-      Height = 29
-      Top = 0
-      Width = 184
+      Left = 16
+      Height = 39
+      Top = 16
+      Width = 148
+      BorderSpacing.Around = 16
       Caption = 'vorwärts'
       Checked = True
       OnChange = rbForwardChange
+      ParentFont = False
       TabOrder = 1
       TabStop = True
     end
     object rbBackward: TRadioButton
-      Left = 6
-      Height = 29
-      Top = 29
-      Width = 184
+      Left = 16
+      Height = 39
+      Top = 71
+      Width = 148
+      BorderSpacing.Around = 16
       Caption = 'rückwärts'
       OnChange = rbBackwardChange
+      ParentFont = False
       TabOrder = 0
     end
   end
   object lblTrain: TLabel
-    Left = 200
-    Height = 88
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 426
+    Height = 175
     Top = 0
-    Width = 74
+    Width = 146
     Anchors = [akTop, akRight]
     Caption = 'Z1'
     Font.Color = clGray
-    Font.Height = 64
+    Font.Height = 128
     ParentColor = False
     ParentFont = False
   end
   object cbDCC14: TCheckBox
-    Left = 200
-    Height = 22
-    Top = 352
-    Width = 70
+    AnchorSideTop.Control = cbF0
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 450
+    Height = 39
+    Top = 606
+    Width = 106
+    Anchors = [akTop, akRight]
+    BorderSpacing.Around = 16
     Caption = 'DCC14'
     OnChange = cbDCC14Change
+    ParentFont = False
     TabOrder = 4
     TabStop = False
   end
