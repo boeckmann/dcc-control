@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ComCtrls, uformtrain, utrains;
+  ComCtrls, Menus, ExtCtrls, uformtrain, utrains;
 
 type
 
@@ -21,6 +21,13 @@ type
     BtnT6: TButton;
     BtnT7: TButton;
     BtnT8: TButton;
+    MainMenu1: TMainMenu;
+    MenuItem1: TMenuItem;
+    MenuItem2: TMenuItem;
+    MenuItem3: TMenuItem;
+    rbGO: TRadioButton;
+    rbStop: TRadioButton;
+    RadioGroup1: TRadioGroup;
     StatusBar1: TStatusBar;
     tbEStop: TToggleBox;
     procedure ButtonTrainClick(Sender: TObject);
