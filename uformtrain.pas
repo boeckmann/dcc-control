@@ -131,12 +131,12 @@ end;
 
 procedure TFormTrain.FormShow(Sender: TObject);
 begin
+  trains.SetActive(addr, true);
   if not alreadyShown then begin
      trains.SetDirection(addr, Normal);
      trains.SetFunction(addr, 0, false);
      alreadyShown := true;
   end;
-  trains.SetActive(addr, true);
 end;
 
 procedure TFormTrain.rbBackwardChange(Sender: TObject);

@@ -12,7 +12,7 @@ object FormTrain: TFormTrain
   OnHide = FormHide
   OnKeyPress = FormKeyPress
   OnShow = FormShow
-  LCLVersion = '1.8.4.0'
+  LCLVersion = '1.8.5.0'
   object tbSpeed: TTrackBar
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner
@@ -21,7 +21,7 @@ object FormTrain: TFormTrain
     Left = 8
     Height = 384
     Top = 8
-    Width = 25
+    Width = 28
     Max = 28
     OnChange = tbSpeedChange
     Orientation = trVertical
@@ -37,10 +37,10 @@ object FormTrain: TFormTrain
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = rgDirection
     AnchorSideTop.Side = asrBottom
-    Left = 41
-    Height = 128
-    Top = 202
-    Width = 228
+    Left = 44
+    Height = 129
+    Top = 196
+    Width = 229
     AutoFill = True
     AutoSize = True
     BorderSpacing.Around = 8
@@ -53,14 +53,14 @@ object FormTrain: TFormTrain
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 4
-    ClientHeight = 98
-    ClientWidth = 224
+    ClientHeight = 107
+    ClientWidth = 227
     Columns = 4
     ParentFont = False
     TabOrder = 1
     object cbF1: TCheckBox
       Left = 8
-      Height = 22
+      Height = 25
       Top = 8
       Width = 40
       BorderSpacing.Around = 8
@@ -71,9 +71,9 @@ object FormTrain: TFormTrain
     end
     object cbF2: TCheckBox
       Left = 56
-      Height = 22
+      Height = 25
       Top = 8
-      Width = 48
+      Width = 49
       BorderSpacing.Around = 8
       Caption = 'f2'
       ParentFont = False
@@ -81,10 +81,10 @@ object FormTrain: TFormTrain
       TabStop = False
     end
     object cbF3: TCheckBox
-      Left = 112
-      Height = 22
+      Left = 113
+      Height = 25
       Top = 8
-      Width = 48
+      Width = 49
       BorderSpacing.Around = 8
       Caption = 'f3'
       ParentFont = False
@@ -92,10 +92,10 @@ object FormTrain: TFormTrain
       TabStop = False
     end
     object cbF4: TCheckBox
-      Left = 168
-      Height = 22
+      Left = 170
+      Height = 25
       Top = 8
-      Width = 48
+      Width = 49
       BorderSpacing.Around = 8
       Caption = 'f4'
       ParentFont = False
@@ -104,8 +104,8 @@ object FormTrain: TFormTrain
     end
     object cbF5: TCheckBox
       Left = 8
-      Height = 22
-      Top = 38
+      Height = 25
+      Top = 41
       Width = 40
       BorderSpacing.Around = 8
       Caption = 'f5'
@@ -115,9 +115,9 @@ object FormTrain: TFormTrain
     end
     object cbF6: TCheckBox
       Left = 56
-      Height = 22
-      Top = 38
-      Width = 48
+      Height = 25
+      Top = 41
+      Width = 49
       BorderSpacing.Around = 8
       Caption = 'f6'
       ParentFont = False
@@ -125,10 +125,10 @@ object FormTrain: TFormTrain
       TabStop = False
     end
     object cbF7: TCheckBox
-      Left = 112
-      Height = 22
-      Top = 38
-      Width = 48
+      Left = 113
+      Height = 25
+      Top = 41
+      Width = 49
       BorderSpacing.Around = 8
       Caption = 'f7'
       ParentFont = False
@@ -136,10 +136,10 @@ object FormTrain: TFormTrain
       TabStop = False
     end
     object cbF8: TCheckBox
-      Left = 168
-      Height = 22
-      Top = 38
-      Width = 48
+      Left = 170
+      Height = 25
+      Top = 41
+      Width = 49
       BorderSpacing.Around = 8
       Caption = 'f8'
       ParentFont = False
@@ -148,8 +148,8 @@ object FormTrain: TFormTrain
     end
     object cbf9: TCheckBox
       Left = 8
-      Height = 22
-      Top = 68
+      Height = 25
+      Top = 74
       Width = 40
       BorderSpacing.Around = 8
       Caption = 'f9'
@@ -159,9 +159,9 @@ object FormTrain: TFormTrain
     end
     object cbF10: TCheckBox
       Left = 56
-      Height = 22
-      Top = 68
-      Width = 48
+      Height = 25
+      Top = 74
+      Width = 49
       BorderSpacing.Around = 8
       Caption = 'f10'
       ParentFont = False
@@ -169,10 +169,10 @@ object FormTrain: TFormTrain
       TabStop = False
     end
     object cbF11: TCheckBox
-      Left = 112
-      Height = 22
-      Top = 68
-      Width = 48
+      Left = 113
+      Height = 25
+      Top = 74
+      Width = 49
       BorderSpacing.Around = 8
       Caption = 'f11'
       ParentFont = False
@@ -180,10 +180,10 @@ object FormTrain: TFormTrain
       TabStop = False
     end
     object cbF12: TCheckBox
-      Left = 168
-      Height = 22
-      Top = 68
-      Width = 48
+      Left = 170
+      Height = 25
+      Top = 74
+      Width = 49
       BorderSpacing.Around = 8
       Caption = 'f12'
       ParentFont = False
@@ -196,10 +196,10 @@ object FormTrain: TFormTrain
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = CheckGroup1
     AnchorSideTop.Side = asrBottom
-    Left = 41
-    Height = 22
-    Top = 338
-    Width = 81
+    Left = 44
+    Height = 25
+    Top = 333
+    Width = 88
     BorderSpacing.Around = 8
     Caption = 'Licht / f0'
     OnChange = cbF0Change
@@ -211,10 +211,10 @@ object FormTrain: TFormTrain
     AnchorSideLeft.Control = tbSpeed
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = Owner
-    Left = 41
-    Height = 88
+    Left = 44
+    Height = 84
     Top = 0
-    Width = 37
+    Width = 36
     Caption = '0'
     Font.Height = 64
     ParentColor = False
@@ -225,10 +225,10 @@ object FormTrain: TFormTrain
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = lblSpeed
     AnchorSideTop.Side = asrBottom
-    Left = 41
-    Height = 98
-    Top = 96
-    Width = 109
+    Left = 44
+    Height = 96
+    Top = 92
+    Width = 113
     AutoFill = True
     AutoSize = True
     BorderSpacing.Around = 8
@@ -240,15 +240,15 @@ object FormTrain: TFormTrain
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 1
-    ClientHeight = 68
-    ClientWidth = 105
+    ClientHeight = 74
+    ClientWidth = 111
     ParentFont = False
     TabOrder = 2
     object rbForward: TRadioButton
       Left = 8
-      Height = 22
+      Height = 25
       Top = 8
-      Width = 89
+      Width = 95
       BorderSpacing.Around = 8
       Caption = 'vorwärts'
       Checked = True
@@ -259,9 +259,9 @@ object FormTrain: TFormTrain
     end
     object rbBackward: TRadioButton
       Left = 8
-      Height = 22
-      Top = 38
-      Width = 89
+      Height = 25
+      Top = 41
+      Width = 95
       BorderSpacing.Around = 8
       Caption = 'rückwärts'
       OnChange = rbBackwardChange
@@ -274,7 +274,7 @@ object FormTrain: TFormTrain
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
     Left = 204
-    Height = 88
+    Height = 84
     Top = 0
     Width = 74
     Anchors = [akTop, akRight]
@@ -292,10 +292,10 @@ object FormTrain: TFormTrain
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = Owner
     AnchorSideBottom.Side = asrBottom
-    Left = 208
-    Height = 22
-    Top = 338
-    Width = 70
+    Left = 203
+    Height = 25
+    Top = 333
+    Width = 75
     Anchors = [akTop, akRight]
     BorderSpacing.Around = 8
     Caption = 'DCC14'

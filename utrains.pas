@@ -2,6 +2,8 @@ unit utrains;
 
 {$mode objfpc}{$H+}
 
+{$define COMM}
+
 interface
 
 uses
