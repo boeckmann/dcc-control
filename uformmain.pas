@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ComCtrls, Menus, ExtCtrls, uformtrain, utrains;
+  ComCtrls, Menus, ExtCtrls, uformtrain, utrains, uformconfig;
 
 type
 
@@ -32,6 +32,9 @@ type
     tbEStop: TToggleBox;
     procedure ButtonTrainClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormKeyPress(Sender: TObject; var Key: char);
+    procedure MenuItem3Click(Sender: TObject);
+    procedure rbStopChange(Sender: TObject);
     procedure tbEStopChange(Sender: TObject);
   private
     trainForms: array[1..8] of TFormTrain;
@@ -63,10 +66,29 @@ procedure TFormMain.FormCreate(Sender: TObject);
 var
   i: integer;
 begin
+  KeyPreview:=true;
+
   for i:=low(trainForms) to high(trainForms) do begin
     trainForms[i] := TFormTrain.Create(self, i);
   end;
 
+end;
+
+procedure TFormMain.FormKeyPress(Sender: TObject; var Key: char);
+begin
+  if Key in ['1'..'8'] then begin
+    ActivateTrainForm(Ord(Key)-Ord('0'));
+  end;
+end;
+
+procedure TFormMain.MenuItem3Click(Sender: TObject);
+begin
+  FormConfig.Show;
+end;
+
+procedure TFormMain.rbStopChange(Sender: TObject);
+begin
+  trains.SetEStop(not rbGo.Checked);
 end;
 
 procedure TFormMain.ButtonTrainClick(Sender: TObject);

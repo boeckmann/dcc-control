@@ -1,83 +1,89 @@
-object Form1: TForm1
-  Left = 679
-  Height = 929
-  Top = 252
-  Width = 1291
+object FormConfig: TFormConfig
+  Left = 908
+  Height = 274
+  Top = 284
+  Width = 657
   Caption = 'Züge und Funktionen verwalten'
-  ClientHeight = 929
-  ClientWidth = 1291
-  DesignTimePPI = 192
-  LCLVersion = '1.9.0.0'
-  object Label1: TLabel
-    Left = 104
-    Height = 37
-    Top = 56
-    Width = 32
-    Caption = '#1'
-    ParentColor = False
+  ClientHeight = 274
+  ClientWidth = 657
+  LCLVersion = '1.8.4.0'
+  inline TrainPropFrame1: TTrainPropFrame
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 8
+    Height = 32
+    Top = 8
+    Width = 641
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Around = 8
+    ClientHeight = 32
+    ClientWidth = 641
+    DesignTop = 241
+    inherited lblNum: TLabel
+      AnchorSideLeft.Control = TrainPropFrame1
+      Left = 0
+      Top = 7
+    end
+    inherited edTrainName: TEdit
+      AnchorSideTop.Control = TrainPropFrame1
+      Left = 24
+      Top = 0
+      Width = 274
+    end
+    inherited cbS: TCheckBox
+      Left = 306
+      Top = 5
+    end
+    inherited cbF1_12: TCheckBox
+      Left = 419
+      Top = 5
+    end
+    inherited cbVisible: TCheckBox
+      AnchorSideRight.Control = TrainPropFrame1
+      Left = 562
+      Top = 5
+    end
   end
-  object edTrainName: TEdit
-    Left = 168
-    Height = 49
+  inline TrainPropFrame2: TTrainPropFrame
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = TrainPropFrame1
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 8
+    Height = 32
     Top = 48
-    Width = 296
-    TabOrder = 0
-    Text = 'Zug 1'
-  end
-  object cbF0: TCheckBox
-    AnchorSideLeft.Control = edTrainName
-    AnchorSideLeft.Side = asrBottom
-    AnchorSideTop.Control = edTrainName
-    AnchorSideTop.Side = asrCenter
-    Left = 480
-    Height = 39
-    Top = 53
-    Width = 180
-    BorderSpacing.Around = 16
-    Caption = 'Geschw. / F0'
+    Width = 641
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Around = 8
+    ClientHeight = 32
+    ClientWidth = 641
     TabOrder = 1
-  end
-  object cbF1: TCheckBox
-    AnchorSideLeft.Control = cbF0
-    AnchorSideLeft.Side = asrBottom
-    AnchorSideTop.Control = cbF0
-    AnchorSideTop.Side = asrCenter
-    Left = 676
-    Height = 21
-    Top = 62
-    Width = 21
-    BorderSpacing.Around = 16
-    TabOrder = 2
-  end
-  object cbF2: TCheckBox
-    AnchorSideLeft.Control = cbF1
-    AnchorSideLeft.Side = asrBottom
-    AnchorSideTop.Control = cbF1
-    AnchorSideTop.Side = asrCenter
-    Left = 713
-    Height = 21
-    Top = 62
-    Width = 21
-    BorderSpacing.Around = 16
-    TabOrder = 3
-  end
-  object cbF3: TCheckBox
-    AnchorSideLeft.Control = cbF2
-    AnchorSideLeft.Side = asrBottom
-    AnchorSideTop.Control = cbF2
-    AnchorSideTop.Side = asrCenter
-    Left = 750
-    Height = 21
-    Top = 62
-    Width = 21
-    BorderSpacing.Around = 16
-    TabOrder = 4
-  end
-  object CheckBox5: TCheckBox
-    Left = 40
-    Height = 21
-    Top = 64
-    Width = 21
-    TabOrder = 5
+    inherited lblNum: TLabel
+      AnchorSideLeft.Control = TrainPropFrame2
+      Left = 0
+      Top = 7
+    end
+    inherited edTrainName: TEdit
+      AnchorSideTop.Control = TrainPropFrame2
+      Left = 24
+      Top = 0
+      Width = 274
+    end
+    inherited cbS: TCheckBox
+      Left = 306
+      Top = 5
+    end
+    inherited cbF1_12: TCheckBox
+      Left = 419
+      Top = 5
+    end
+    inherited cbVisible: TCheckBox
+      AnchorSideRight.Control = TrainPropFrame2
+      Left = 562
+      Top = 5
+    end
   end
 end

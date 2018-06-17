@@ -5,20 +5,16 @@ unit uformconfig;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
+  utrainpropframe;
 
 type
 
-  { TForm1 }
+  { TFormConfig }
 
-  TForm1 = class(TForm)
-    cbF0: TCheckBox;
-    cbF1: TCheckBox;
-    cbF2: TCheckBox;
-    cbF3: TCheckBox;
-    CheckBox5: TCheckBox;
-    edTrainName: TEdit;
-    Label1: TLabel;
+  TFormConfig = class(TForm)
+    TrainPropFrame1: TTrainPropFrame;
+    TrainPropFrame2: TTrainPropFrame;
   private
 
   public
@@ -26,7 +22,7 @@ type
   end;
 
 var
-  Form1: TForm1;
+  FormConfig: TFormConfig;
 
 implementation
 

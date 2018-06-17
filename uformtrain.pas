@@ -99,6 +99,10 @@ end;
 procedure TFormTrain.FormKeyPress(Sender: TObject; var Key: char);
 begin
 
+  if Key = #27 then begin
+    FormMain.rbStop.Checked:=true;
+  end;
+
   if Key = ' ' then begin
      tbSpeed.Position:=0;
   end;
@@ -120,7 +124,7 @@ begin
     cbF0.Checked := not cbF0.Checked;
   end;
 
-  if Key in ['1'..'4'] then begin
+  if Key in ['1'..'8'] then begin
     FormMain.ActivateTrainForm(Ord(Key)-Ord('0'));
   end;
 end;
