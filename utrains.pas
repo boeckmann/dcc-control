@@ -2,7 +2,9 @@ unit utrains;
 
 {$mode objfpc}{$H+}
 
+{$if 0}
 {$define COMM}
+{$endif}
 
 interface
 
@@ -11,12 +13,13 @@ uses
 
 type
 
-TDirection = (Normal, Backward);
+TDirection = (Forward, Backward);
 
 TTrain = class
+  addr: Integer;
   speed: Integer;
   direction: TDirection;
-  functions: array[0..12] of Boolean;
+  functions: array[0..28] of Boolean;
   dcc14: Boolean;
 public
   constructor Create;
@@ -33,8 +36,10 @@ private
   function SendSpeedDir(train: Integer; speed: Integer; dir: TDirection): Boolean;
 
 public
-  constructor Create;
+  constructor Create(port: String);
 
+  function SetTrackPower(power: Boolean): Boolean;
+  function GeneratorReset : Boolean;
   function SetEStop(stop: Boolean): Boolean;
   function SetSpeed(train: Integer; speed: Integer): Boolean;
   function SetDirection(train: Integer; dir: TDirection): Boolean;
@@ -46,29 +51,31 @@ end;
 var
   trains: TTrains;
 
+const
+  SER_TIMEOUT = 1000;
+
 implementation
 
 uses uformmain;
 
 function TTrains.RecvAnswer(): Boolean;
 var
-  answer: String;
+  answer: array[0..1] of Byte;
 
 begin
+  Result := True;
+  answer[0] := 0;
   {$IFDEF COMM}
-  SetLength(answer, 10);
-  answer[1] := ' ';
   repeat
-    if SerRead(serialHandle, answer[1], 1) = 0 then continue;
-    WriteLn('>' + answer[1]);
-  until answer[1] = '?';
-  while SerRead(serialHandle, answer[2], 1) = 0 do;
-  WriteLn('!' + answer[2]);
-
-  Result := answer[2] = 'O';
+    if SerReadTimeout(serialHandle, answer, 1, SER_TIMEOUT) = 0 then begin
+      Result := False;
+    end;
+  until (not Result) or (answer[0] = Ord('?'));
+  if Result then begin
+     if (SerReadTimeout(serialHandle, answer, 1, SER_TIMEOUT) = 0) or (answer[0] <> Ord('O')) then Result := False;
+  end;
   {$ENDIF}
-
-  if Result = false then FormMain.SetCommError;
+  if not Result then FormMain.SetCommError;
 end;
 
 function TTrains.SendCommand(cmd: String): Boolean;
@@ -77,7 +84,6 @@ var
 begin
   s := '!' + cmd + #13 + #10;
 
-  Write(s);
   {$IFDEF COMM}
   SerWrite(serialHandle, s[1], length(s));
   SerSync(serialHandle);
@@ -90,9 +96,8 @@ function TTrains.SendTrainCommand(addr: Integer; cmd: String): Boolean;
 var
   s: String;
 begin
-  s := Format('!%.3d%s'+#13+#10, [addr, cmd]);
+  s := Format('!%d%s'+#13+#10, [addr, cmd]);
 
-  Write(s);
   {$IFDEF COMM}
   SerWrite(serialHandle, s[1], length(s));
   SerSync(serialHandle);
@@ -101,15 +106,31 @@ begin
   Result := RecvAnswer();
 end;
 
-constructor TTrains.Create;
+constructor TTrains.Create(port: String);
 var
   i: Integer;
 begin
   for i := low(trains) to high(trains) do trains[i] := TTrain.Create;
   {$IFDEF COMM}
-  serialHandle := SerOpen('/dev/ttyACM0');
+  serialHandle := SerOpen(port);
+  if serialHandle = 0 then raise Exception.Create('can not open serial port ' + port);
   SerSetParams(serialHandle, 9600, 8, NoneParity, 1, []);
   {$ENDIF}
+end;
+
+
+function TTrains.SetTrackPower(power: Boolean): Boolean;
+begin
+  if (power) then SendCommand('P+')
+  else SendCommand('P-');
+
+  Result := true;
+end;
+
+
+function TTrains.GeneratorReset : Boolean;
+begin
+  Result := SendCommand('R');
 end;
 
 
@@ -145,9 +166,9 @@ var
   cmd: String;
   d: String;
 begin
-  if dir = Normal then d:= 'V' else d:='R';
+  if dir = Forward then d := 'V' else d := 'R';
 
-  cmd := Format('%s%.2d', [d, speed]);
+  cmd := Format('%s%d', [d, speed]);
 
   SendTrainCommand(train, cmd);
   Result := true;
@@ -191,12 +212,11 @@ var
   i: Integer;
 begin
   speed := 0;
-  direction := Normal;
+  direction := Forward;
   for i := low(functions) to high(functions) do functions[i] := false;
   dcc14 := false;
 end;
 
 begin
-  trains := TTrains.Create;
 end.
 
