@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  ExtCtrls, StdCtrls, utrains, Types, LCLType, uformaddress;
+  ExtCtrls, StdCtrls, utrains, Types, LCLType, Buttons, uformaddress;
 
 type
 
@@ -21,18 +21,25 @@ type
     cbF6: TCheckBox;
     cbF7: TCheckBox;
     cbF8: TCheckBox;
-    cbf9: TCheckBox;
+    cbF9: TCheckBox;
     cbF10: TCheckBox;
     cbF11: TCheckBox;
     cbF12: TCheckBox;
     cbDCC14: TCheckBox;
     cbF0: TCheckBox;
-    CheckGroup1: TCheckGroup;
+    ImageList1: TImageList;
+    lblFn: TLabel;
     lblTrain: TLabel;
     lblSpeed: TLabel;
-    rbForward: TRadioButton;
-    rbBackward: TRadioButton;
-    rgDirection: TRadioGroup;
+    panelFn: TPanel;
+    sbF1: TSpeedButton;
+    sbF13: TSpeedButton;
+    sbF25: TSpeedButton;
+    sbF37: TSpeedButton;
+    sbF49: TSpeedButton;
+    sbF61: TSpeedButton;
+    sbForward: TSpeedButton;
+    sbBackward: TSpeedButton;
     tbSpeed: TTrackBar;
     procedure cbDCC14Change(Sender: TObject);
     procedure cbF0Change(Sender: TObject);
@@ -49,8 +56,9 @@ type
       MousePos: TPoint; var Handled: Boolean);
     procedure FormShow(Sender: TObject);
     procedure lblTrainClick(Sender: TObject);
-    procedure rbBackwardChange(Sender: TObject);
-    procedure rbForwardChange(Sender: TObject);
+    procedure sbBackwardClick(Sender: TObject);
+    procedure sbForwardClick(Sender: TObject);
+    procedure sbFxClick(Sender: TObject);
     procedure tbSpeedChange(Sender: TObject);
 
     constructor Create(AOwner: TComponent; addr: Integer); overload;
@@ -59,7 +67,14 @@ type
     addr: Integer;
     alreadyShown: Boolean;
     cbFn: array[1..12] of TCheckBox;
+    sbFn: array[1..6] of TSpeedButton;
     controlsEnabled : Boolean;
+    fnBase : Integer; { erste Funktionsnummer von ausgewaehlter Funktionsseite }
+    procedure UpdateFxControls(fxGroup : Integer);
+    function FxSbToGroup(Sender: TObject) : Integer;
+    procedure ChangeDirection;
+    function CbFnToNum(cb: TCheckBox) : Integer;
+    procedure SelectNextFnGroup;
   public
     procedure ResetSpeedAndFn;
     procedure EnableControls(enable: Boolean);
@@ -85,6 +100,7 @@ begin
   self.addr := addr;
   alreadyShown := false;
   controlsEnabled := true;
+  fnBase := 0;
 
   cbFn[1] := cbF1;
   cbFn[2] := cbF2;
@@ -98,6 +114,13 @@ begin
   cbFn[10] := cbF10;
   cbFn[11] := cbF11;
   cbFn[12] := cbF12;
+
+  sbFn[1] := sbF1;
+  sbFn[2] := sbF13;
+  sbFn[3] := sbF25;
+  sbFn[4] := sbF37;
+  sbFn[5] := sbF49;
+  sbFn[6] := sbF61;
 end;
 
 
@@ -106,8 +129,8 @@ var i : Integer;
 begin
   controlsEnabled := enable;
   tbSpeed.Enabled := enable;
-  rbForward.Enabled := enable;
-  rbBackward.Enabled := enable;
+  sbForward.Enabled := enable;
+  sbBackward.Enabled := enable;
   cbDCC14.Enabled := enable;
   cbF0.Enabled := enable;
   for i := low(cbFn) to high(cbFn) do cbFn[i].Enabled := enable;
@@ -126,7 +149,8 @@ end;
 
 procedure TFormTrain.tbSpeedChange(Sender: TObject);
 begin
-  rgDirection.Enabled := tbSpeed.Position = 0;
+  sbForward.Enabled := (tbSpeed.Position = 0) or sbForward.Down;
+  sbBackward.Enabled := (tbSpeed.Position = 0) or sbBackward.Down;
   cbDCC14.Enabled := tbSpeed.Position = 0;
 
   trains.SetSpeed(addr, tbSpeed.Position);
@@ -142,15 +166,18 @@ begin
   lblTrain.Caption:='#' + IntToStr(addr);
 end;
 
+
 procedure TFormTrain.FormDeactivate(Sender: TObject);
 begin
   Color := clDefault;
 end;
 
+
 procedure TFormTrain.FormHide(Sender: TObject);
 begin
   { trains.SetActive(addr, false); }
 end;
+
 
 procedure TFormTrain.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
@@ -160,12 +187,16 @@ begin
   if (Key >= VK_F1) and (Key <= VK_F12) and (Shift = []) then begin
     if controlsEnabled then begin
       fn := Key-VK_F1+1;
-      cbFn[fn].Checked := not cbFn[fn].Checked;
+      if fn + fnBase <= 68 then cbFn[fn].Checked := not cbFn[fn].Checked;
     end;
     Key := 0;
   end;
   if Key = VK_SPACE then begin
     FormMain.ActivateEOff;
+    Key := 0;
+  end;
+  if Key = VK_TAB then begin
+    SelectNextFnGroup;
     Key := 0;
   end;
 
@@ -177,28 +208,33 @@ begin
 
   if controlsEnabled then begin
 
-    if Key = 'i' then begin
+    if Key in ['i', 'I'] then begin
       tbSpeed.Position:=tbSpeed.Position + 1;
     end;
 
-    if Key = 'k' then begin
+    if Key in ['k', 'K'] then begin
       tbSpeed.Position:=tbSpeed.Position - 1;
     end;
 
-    if (Key = 'j') and (tbSpeed.Position = 0) then begin
-      if rbForward.Checked then rbBackward.Checked:=true
-      else rbForward.Checked:=true;
+    if (Key in ['j', 'J']) and (tbSpeed.Position = 0) then begin
+      if sbForward.Down then sbBackward.Down:=true
+      else sbForward.Down:=true;
+      ChangeDirection;
     end;
 
-    if Key = 'l' then begin
+    if Key in ['l', 'L'] then begin
       cbF0.Checked := not cbF0.Checked;
     end;
 
-    if Key in ['s'] then begin
+    if Key in ['h', 'H'] then begin
+      tbSpeed.Position := 0;
+    end;
+
+    if Key in ['s', 'S'] then begin
        FormMain.TogglePower;
     end;
 
-    if Key in ['p'] then begin
+    if Key in ['p', 'P'] then begin
        FormMain.TogglePause;
     end;
   end;
@@ -243,16 +279,64 @@ begin
   { FormAddress.ShowModal; }
 end;
 
-
-procedure TFormTrain.rbBackwardChange(Sender: TObject);
+procedure TFormTrain.sbBackwardClick(Sender: TObject);
 begin
-  trains.SetDirection(addr, Backward);
+  ChangeDirection;
+end;
+
+procedure TFormTrain.sbForwardClick(Sender: TObject);
+begin
+  ChangeDirection;
 end;
 
 
-procedure TFormTrain.rbForwardChange(Sender: TObject);
+procedure TFormTrain.ChangeDirection;
 begin
-  trains.SetDirection(addr, Forward);
+  if sbForward.Down then trains.SetDirection(addr, Forward)
+  else trains.SetDirection(addr, Backward);
+end;
+
+
+procedure TFormTrain.UpdateFxControls(fxGroup : Integer);
+var i : Integer;
+begin
+  fnBase := fxGroup * 12;
+
+  for i := low(cbFn) to high(cbFn) do begin
+    cbFn[i].Visible := i + fnBase <= 68;
+    cbFn[i].Caption := 'F' + IntToStr(i + fnBase);
+    cbFn[i].Checked := trains.GetFunction(addr, i + fnBase);
+  end;
+end;
+
+function TFormTrain.CbFnToNum(cb: TCheckBox) : Integer;
+var i : Integer;
+begin
+  Result := 0;
+  for i := low(cbFn) to high(cbFn) do if cb = cbFn[i] then Result := i;
+end;
+
+function TFormTrain.FxSbToGroup(Sender: TObject) : Integer;
+begin
+  Result := 0;
+  if Sender = sbF13 then Result := 1
+  else if Sender = sbF25 then Result := 2
+  else if Sender = sbF37 then Result := 3
+  else if Sender = sbF49 then Result := 4
+  else if Sender = sbF61 then Result := 5;
+end;
+
+procedure TFormTrain.SelectNextFnGroup;
+var page : Integer;
+begin
+  page := (fnBase div 12 + 1) mod 6;
+  sbFn[page+1].Down := true;
+  UpdateFxControls(page);
+end;
+
+procedure TFormTrain.sbFxClick(Sender: TObject);
+begin
+  UpdateFxControls(FxSbToGroup(Sender));
 end;
 
 
@@ -266,9 +350,8 @@ procedure TFormTrain.cbFxChange(Sender: TObject);
 var
   cb: TCheckBox;
 begin
-  { TabOrder+1 als Funktionsnummer benutzen }
   cb := Sender as TCheckBox;
-  trains.SetFunction(addr, cb.TabOrder+1, cb.Checked);
+  trains.SetFunction(addr, fnBase + CbFnToNum(cb), cb.Checked);
 end;
 
 

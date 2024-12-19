@@ -27,7 +27,8 @@ type
     MainMenu1: TMainMenu;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
-    MenuItem3: TMenuItem;
+    MenuItemKeys: TMenuItem;
+    MenuItemHelp: TMenuItem;
     sbPower: TSpeedButton;
     sbPause: TSpeedButton;
     sbEOff: TSpeedButton;
@@ -42,6 +43,7 @@ type
     procedure sbPauseClick(Sender: TObject);
     procedure sbPowerClick(Sender: TObject);
   private
+    EOff : Boolean;
     trainForms: array[1..8] of TFormTrain;
     iniFile: TIniFile;
   public
@@ -71,6 +73,9 @@ implementation
 procedure TFormMain.ActivateEOff;
 var i : Integer;
 begin
+  if EOff then Exit;
+  EOff := true;
+
   trains.SetTrackPower(false);
   trains.ResetSpeedAndFn;
 
@@ -96,14 +101,15 @@ end;
 procedure TFormMain.ReleaseEOff;
 var i : Integer;
 begin
-  if sbEOff.Down then begin
-    sbEOff.Down := false;
-    sbPower.Enabled := true;
-    sbPause.Enabled := true;
+  if not EOff then Exit;
+  EOff := false;
 
-    for i := low(trainForms) to high(trainForms) do begin
-      trainForms[i].EnableControls(true);
-    end;
+  sbEOff.Down := false;
+  sbPower.Enabled := true;
+  sbPause.Enabled := true;
+
+  for i := low(trainForms) to high(trainForms) do begin
+    trainForms[i].EnableControls(true);
   end;
 end;
 
@@ -161,6 +167,8 @@ var
   i: integer;
   port: String;
 begin
+  EOff := false;
+
   iniFile := TIniFile.Create('settings.ini');
   port := iniFile.ReadString('COM', 'Port', '\\.\COM1');
 

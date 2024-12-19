@@ -19,7 +19,7 @@ TTrain = class
   addr: Integer;
   speed: Integer;
   direction: TDirection;
-  functions: array[0..28] of Boolean;
+  functions: array[0..68] of Boolean;
   dcc14: Boolean;
 public
   constructor Create;
@@ -52,9 +52,10 @@ public
 
   function SetTrackPower(power: Boolean): Boolean;
   function SetEStop(stop: Boolean): Boolean;
-  function SetSpeed(train: Integer; speed: Integer): Boolean;
+  function SetSpeed(train: Integer; spd: Integer): Boolean;
   function SetDirection(train: Integer; dir: TDirection): Boolean;
-  function SetFunction(train: Integer; num: Integer; f: Boolean): Boolean;
+  procedure SetFunction(train: Integer; num: Integer; f: Boolean);
+  function GetFunction(train: Integer; num: Integer): Boolean;
   function SetDCC14(train: Integer; value: Boolean): Boolean;
   function SetActive(train: Integer; value: boolean): Boolean;
 end;
@@ -228,36 +229,50 @@ begin
 end;
 
 
-function TTrains.SetSpeed(train: Integer; speed: Integer): Boolean;
+function TTrains.SetSpeed(train: Integer; spd: Integer): Boolean;
 begin
-     trains[train].speed := speed;
-     SendSpeedDir(train, speed, trains[train].direction);
-
-     Result := true;
+  with trains[train] do begin
+    if speed <> spd then begin
+      speed := spd;
+      SendSpeedDir(train, speed, direction);
+    end;
+  end;
+  Result := true;
 end;
 
 
 function TTrains.SetDirection(train: Integer; dir: TDirection): Boolean;
 begin
-  trains[train].direction:=dir;
-  SendSpeedDir(train, trains[train].speed, dir);
-
+  with trains[train] do begin
+    if direction <> dir then begin
+      direction := dir;
+      SendSpeedDir(train, speed, direction);
+    end;
+  end;
   Result := true;
 end;
 
-function TTrains.SetFunction(train: Integer; num: Integer; f: Boolean): Boolean;
+
+procedure TTrains.SetFunction(train: Integer; num: Integer; f: Boolean);
 var
   cmd: String;
   fs: String;
 begin
-  trains[train].functions[num] := f;
+  if (num <= 68) and (trains[train].functions[num] <> f) then begin
+    trains[train].functions[num] := f;
 
-  if f then fs := '+' else fs := '-';
+    if f then fs := '+' else fs := '-';
 
-  cmd := Format('F%.2d%s', [num, fs]);
-  SendTrainCommand(train, cmd);
+    cmd := Format('F%.2d%s', [num, fs]);
+    SendTrainCommand(train, cmd);
+  end;
+end;
 
-  Result := true;
+
+function TTrains.GetFunction(train: Integer; num: Integer) : Boolean;
+begin
+  if num <= 68 then Result := trains[train].functions[num]
+  else Result := false;
 end;
 
 constructor TTrain.Create;

@@ -1,8 +1,8 @@
 object FormMain: TFormMain
   AnchorSideRight.Side = asrBottom
-  Left = 25
+  Left = 16
   Height = 306
-  Top = 32
+  Top = 36
   Width = 1578
   AutoSize = True
   BorderIcons = [biSystemMenu, biMinimize]
@@ -169,7 +169,8 @@ object FormMain: TFormMain
     Top = 16
     Width = 87
     AutoSize = True
-    BorderSpacing.Around = 16
+    BorderSpacing.Top = 16
+    BorderSpacing.Bottom = 8
     Caption = 'Pult 8'
     ParentFont = False
     TabOrder = 2
@@ -240,12 +241,14 @@ object FormMain: TFormMain
     Top = 80
     object MenuItem1: TMenuItem
       Caption = 'Datei'
-      object MenuItem3: TMenuItem
-        Caption = 'Züge...'
-        OnClick = MenuItem3Click
-      end
       object MenuItem2: TMenuItem
         Caption = 'Beenden'
+      end
+    end
+    object MenuItemHelp: TMenuItem
+      Caption = 'Hilfe'
+      object MenuItemKeys: TMenuItem
+        Caption = 'Tastenbelegung'
       end
     end
   end

@@ -101,7 +101,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="8">
+    <Units Count="4">
       <Unit0>
         <Filename Value="DCCEasyControl.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -124,33 +124,6 @@
         <Filename Value="utrains.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit3>
-      <Unit4>
-        <Filename Value="uformconfig.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="FormConfig"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-      </Unit4>
-      <Unit5>
-        <Filename Value="unit1.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="Frame1"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Unit5>
-      <Unit6>
-        <Filename Value="utrainpropframe.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="TrainPropFrame"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Frame"/>
-      </Unit6>
-      <Unit7>
-        <Filename Value="uformaddress.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="FormAddress"/>
-        <HasResources Value="True"/>
-        <ResourceBaseClass Value="Form"/>
-      </Unit7>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
