@@ -2,7 +2,7 @@ unit utrains;
 
 {$mode objfpc}{$H+}
 
-{$if 0}
+{$if 1}
 {$define COMM}
 {$endif}
 
@@ -23,12 +23,15 @@ TTrain = class
   dcc14: Boolean;
 public
   constructor Create;
+  procedure Reset;
+  procedure ResetSpeedAndFn;
 end;
 
 TTrains = class
   trains: array[1..127] of TTrain;
 private
   serialHandle: LongInt;
+  suppressCommands : Integer;
   function SendCommand(cmd: String): Boolean;
   function SendTrainCommand(addr: Integer; cmd: String): Boolean;
   function RecvAnswer(): Boolean;
@@ -36,10 +39,18 @@ private
   function SendSpeedDir(train: Integer; speed: Integer; dir: TDirection): Boolean;
 
 public
+
   constructor Create(port: String);
+  destructor Destroy; override;
+
+  procedure Reset;
+  procedure ResetSpeedAndFn;
+  function GeneratorReset : Boolean;
+
+  procedure PauseCommands;
+  procedure ResumeCommands;
 
   function SetTrackPower(power: Boolean): Boolean;
-  function GeneratorReset : Boolean;
   function SetEStop(stop: Boolean): Boolean;
   function SetSpeed(train: Integer; speed: Integer): Boolean;
   function SetDirection(train: Integer; dir: TDirection): Boolean;
@@ -58,23 +69,39 @@ implementation
 
 uses uformmain;
 
+procedure TTrains.PauseCommands;
+begin
+  Inc(suppressCommands);
+end;
+
+
+procedure TTrains.ResumeCommands;
+begin
+  if suppressCommands > 0 then Dec(suppressCommands);
+end;
+
+
 function TTrains.RecvAnswer(): Boolean;
 var
   answer: array[0..1] of Byte;
 
 begin
   Result := True;
-  answer[0] := 0;
-  {$IFDEF COMM}
-  repeat
-    if SerReadTimeout(serialHandle, answer, 1, SER_TIMEOUT) = 0 then begin
-      Result := False;
+
+  if SuppressCommands = 0 then begin
+    answer[0] := 0;
+    {$IFDEF COMM}
+    repeat
+      if SerReadTimeout(serialHandle, answer, 1, SER_TIMEOUT) = 0 then begin
+        Result := False;
+      end;
+    until (not Result) or (answer[0] = Ord('?'));
+    if Result then begin
+       if (SerReadTimeout(serialHandle, answer, 1, SER_TIMEOUT) = 0) or (answer[0] <> Ord('O')) then Result := False;
     end;
-  until (not Result) or (answer[0] = Ord('?'));
-  if Result then begin
-     if (SerReadTimeout(serialHandle, answer, 1, SER_TIMEOUT) = 0) or (answer[0] <> Ord('O')) then Result := False;
+    {$ENDIF}
   end;
-  {$ENDIF}
+
   if not Result then FormMain.SetCommError;
 end;
 
@@ -82,13 +109,16 @@ function TTrains.SendCommand(cmd: String): Boolean;
 var
   s: String;
 begin
-  s := '!' + cmd + #13 + #10;
+  if SuppressCommands = 0 then begin
+    s := '!' + cmd + #13 + #10;
 
-  {$IFDEF COMM}
-  SerWrite(serialHandle, s[1], length(s));
-  SerSync(serialHandle);
-  {$ENDIF}
-  Result := RecvAnswer();
+    {$IFDEF COMM}
+    SerWrite(serialHandle, s[1], length(s));
+    SerSync(serialHandle);
+    {$ENDIF}
+    Result := RecvAnswer();
+  end else Result := true;
+
 end;
 
 
@@ -96,14 +126,15 @@ function TTrains.SendTrainCommand(addr: Integer; cmd: String): Boolean;
 var
   s: String;
 begin
-  s := Format('!%d%s'+#13+#10, [addr, cmd]);
+  if SuppressCommands = 0 then begin
+    s := Format('!%d%s'+#13+#10, [addr, cmd]);
 
-  {$IFDEF COMM}
-  SerWrite(serialHandle, s[1], length(s));
-  SerSync(serialHandle);
-  {$ENDIF}
-
-  Result := RecvAnswer();
+    {$IFDEF COMM}
+    SerWrite(serialHandle, s[1], length(s));
+    SerSync(serialHandle);
+    {$ENDIF}
+    Result := RecvAnswer();
+  end else Result := true;
 end;
 
 constructor TTrains.Create(port: String);
@@ -116,6 +147,27 @@ begin
   if serialHandle = 0 then raise Exception.Create('can not open serial port ' + port);
   SerSetParams(serialHandle, 9600, 8, NoneParity, 1, []);
   {$ENDIF}
+end;
+
+destructor TTrains.Destroy;
+var i : Integer;
+begin
+  for i := low(trains) to high(trains) do FreeAndNil(trains[i]);
+end;
+
+procedure TTrains.Reset;
+var i: Integer;
+begin
+  SendCommand('R');
+  for i := low(trains) to high(trains) do trains[i].Reset;
+end;
+
+
+procedure TTrains.ResetSpeedAndFn;
+var i: Integer;
+begin
+  SendCommand('S');
+  for i := low(trains) to high(trains) do trains[i].ResetSpeedAndFn;
 end;
 
 
@@ -131,6 +183,7 @@ end;
 function TTrains.GeneratorReset : Boolean;
 begin
   Result := SendCommand('R');
+  Reset;
 end;
 
 
@@ -208,13 +261,24 @@ begin
 end;
 
 constructor TTrain.Create;
-var
-  i: Integer;
+begin
+  Reset;
+end;
+
+procedure TTrain.Reset;
+var i: Integer;
 begin
   speed := 0;
   direction := Forward;
   for i := low(functions) to high(functions) do functions[i] := false;
   dcc14 := false;
+end;
+
+procedure TTrain.ResetSpeedAndFn;
+var i: Integer;
+begin
+  speed := 0;
+  for i := low(functions) to high(functions) do functions[i] := false;
 end;
 
 begin

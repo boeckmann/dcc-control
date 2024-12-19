@@ -1,7 +1,7 @@
 object FormTrain: TFormTrain
-  Left = 770
+  Left = 320
   Height = 800
-  Top = 331
+  Top = 308
   Width = 572
   AutoSize = True
   BorderStyle = bsDialog

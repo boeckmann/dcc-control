@@ -55,11 +55,14 @@ type
 
     constructor Create(AOwner: TComponent; addr: Integer); overload;
   private
+    formNum: Integer;
     addr: Integer;
     alreadyShown: Boolean;
     cbFn: array[1..12] of TCheckBox;
+    controlsEnabled : Boolean;
   public
-
+    procedure ResetSpeedAndFn;
+    procedure EnableControls(enable: Boolean);
   end;
 
 var
@@ -78,8 +81,10 @@ constructor TFormTrain.Create(AOwner: TComponent; addr: Integer);
 begin
   inherited Create(AOwner);
   KeyPreview:=true;
+  formNum := addr;
   self.addr := addr;
   alreadyShown := false;
+  controlsEnabled := true;
 
   cbFn[1] := cbF1;
   cbFn[2] := cbF2;
@@ -95,6 +100,30 @@ begin
   cbFn[12] := cbF12;
 end;
 
+
+procedure TFormTrain.EnableControls(enable: Boolean);
+var i : Integer;
+begin
+  controlsEnabled := enable;
+  tbSpeed.Enabled := enable;
+  rbForward.Enabled := enable;
+  rbBackward.Enabled := enable;
+  cbDCC14.Enabled := enable;
+  cbF0.Enabled := enable;
+  for i := low(cbFn) to high(cbFn) do cbFn[i].Enabled := enable;
+
+end;
+
+
+procedure TFormTrain.ResetSpeedAndFn;
+var i : Integer;
+begin
+  tbSpeed.Position := 0;
+  cbF0.Checked := false;
+  for i := low(cbFn) to high(cbFn) do cbFn[i].Checked := false;
+end;
+
+
 procedure TFormTrain.tbSpeedChange(Sender: TObject);
 begin
   rgDirection.Enabled := tbSpeed.Position = 0;
@@ -107,9 +136,10 @@ end;
 
 procedure TFormTrain.FormCreate(Sender: TObject);
 begin
-  self.Caption:='Bedienpult ' + IntToStr(addr);
+  Left := 16 + (addr-1) * (ScaleDesignToForm(Width) + ScaleDesignToForm(32));
+  if Left + ScaleDesignToForm(Width) > screen.Width then Left := screen.Width - ScaleDesignToForm(Width);
+  Caption:='Bedienpult ' + IntToStr(addr);
   lblTrain.Caption:='#' + IntToStr(addr);
-
 end;
 
 procedure TFormTrain.FormDeactivate(Sender: TObject);
@@ -128,39 +158,53 @@ var
   fn: Integer;
 begin
   if (Key >= VK_F1) and (Key <= VK_F12) and (Shift = []) then begin
-    fn := Key-VK_F1+1;
-    cbFn[fn].Checked := not cbFn[fn].Checked;
+    if controlsEnabled then begin
+      fn := Key-VK_F1+1;
+      cbFn[fn].Checked := not cbFn[fn].Checked;
+    end;
     Key := 0;
   end;
   if Key = VK_SPACE then begin
-    FormMain.StopOrPowerOff;
+    FormMain.ActivateEOff;
     Key := 0;
   end;
 
 end;
 
+
 procedure TFormTrain.FormKeyPress(Sender: TObject; var Key: char);
 begin
 
+  if controlsEnabled then begin
+
+    if Key = 'i' then begin
+      tbSpeed.Position:=tbSpeed.Position + 1;
+    end;
+
+    if Key = 'k' then begin
+      tbSpeed.Position:=tbSpeed.Position - 1;
+    end;
+
+    if (Key = 'j') and (tbSpeed.Position = 0) then begin
+      if rbForward.Checked then rbBackward.Checked:=true
+      else rbForward.Checked:=true;
+    end;
+
+    if Key = 'l' then begin
+      cbF0.Checked := not cbF0.Checked;
+    end;
+
+    if Key in ['s'] then begin
+       FormMain.TogglePower;
+    end;
+
+    if Key in ['p'] then begin
+       FormMain.TogglePause;
+    end;
+  end;
+
   if Key = #27 then begin
-    tbSpeed.Position:=0;
-  end;
-
-  if Key = 'i' then begin
-    tbSpeed.Position:=tbSpeed.Position + 1;
-  end;
-
-  if Key = 'k' then begin
-    tbSpeed.Position:=tbSpeed.Position - 1;
-  end;
-
-  if (Key = 'j') and (tbSpeed.Position = 0) then begin
-    if rbForward.Checked then rbBackward.Checked:=true
-    else rbForward.Checked:=true;
-  end;
-
-  if Key = 'l' then begin
-    cbF0.Checked := not cbF0.Checked;
+    FormMain.ReleaseEOff;
   end;
 
   if Key in ['1'..'8'] then begin
@@ -168,17 +212,20 @@ begin
   end;
 end;
 
+
 procedure TFormTrain.FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
   MousePos: TPoint; var Handled: Boolean);
 begin
-  tbSpeed.Position:=tbSpeed.Position - 1;
+  if controlsEnabled then tbSpeed.Position:=tbSpeed.Position - 1;
 end;
+
 
 procedure TFormTrain.FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
   MousePos: TPoint; var Handled: Boolean);
 begin
-  tbSpeed.Position:=tbSpeed.Position + 1;
+    if controlsEnabled then tbSpeed.Position:=tbSpeed.Position + 1;
 end;
+
 
 procedure TFormTrain.FormShow(Sender: TObject);
 begin
@@ -190,25 +237,30 @@ begin
   end;
 end;
 
+
 procedure TFormTrain.lblTrainClick(Sender: TObject);
 begin
   { FormAddress.ShowModal; }
 end;
+
 
 procedure TFormTrain.rbBackwardChange(Sender: TObject);
 begin
   trains.SetDirection(addr, Backward);
 end;
 
+
 procedure TFormTrain.rbForwardChange(Sender: TObject);
 begin
   trains.SetDirection(addr, Forward);
 end;
 
+
 procedure TFormTrain.cbF0Change(Sender: TObject);
 begin
   trains.SetFunction(addr, 0, cbF0.Checked);
 end;
+
 
 procedure TFormTrain.cbFxChange(Sender: TObject);
 var
@@ -219,16 +271,19 @@ begin
   trains.SetFunction(addr, cb.TabOrder+1, cb.Checked);
 end;
 
+
 procedure TFormTrain.FormActivate(Sender: TObject);
 begin
   Color := clWhite;
 end;
+
 
 procedure TFormTrain.cbDCC14Change(Sender: TObject);
 begin
   if cbDCC14.Checked then tbSpeed.Max:=14 else tbSpeed.Max:=28;
   trains.SetDCC14(addr, cbDCC14.Checked);
 end;
+
 
 end.
 
