@@ -160,7 +160,7 @@ end;
 
 procedure TFormTrain.FormCreate(Sender: TObject);
 begin
-  Left := 16 + (addr-1) * (ScaleDesignToForm(Width) + ScaleDesignToForm(32));
+  Left := ScaleDesignToForm(16) + (addr-1) * (Width + ScaleDesignToForm(16));
   if Left + ScaleDesignToForm(Width) > screen.Width then Left := screen.Width - ScaleDesignToForm(Width);
   Caption:='Bedienpult ' + IntToStr(addr);
   lblTrain.Caption:='#' + IntToStr(addr);
