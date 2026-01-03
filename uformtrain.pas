@@ -170,6 +170,7 @@ end;
 procedure TFormTrain.FormDeactivate(Sender: TObject);
 begin
   Color := clDefault;
+  lblTrain.Font.Color := clGray;
 end;
 
 
@@ -375,6 +376,7 @@ end;
 procedure TFormTrain.FormActivate(Sender: TObject);
 begin
   Color := clWhite;
+  lblTrain.Font.Color := clGreen;
 end;
 
 
