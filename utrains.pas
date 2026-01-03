@@ -10,8 +10,8 @@ unit utrains;
 interface
 
 uses
-  Classes, SysUtils,
-  {$ifdef COMM}Serial,SerialAux{$endif};
+  Classes, SysUtils
+  {$ifdef COMM},Serial,SerialAux{$endif};
 
 type
 

@@ -3,7 +3,7 @@
 }
 
 {$IFNDEF FPC_DOTTEDUNITS}
-unit SerialUnix;
+unit Serial;
 {$ENDIF FPC_DOTTEDUNITS}
 
 {$MODE objfpc}
