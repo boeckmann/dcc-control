@@ -2,7 +2,7 @@ unit SerialAux;
 
 interface
 
-uses {$ifdef UNIX}SerialUnix{$else}Serial{$endif};
+uses Serial;
 
 function SerReadLineTimeout(port: TSerialHandle; timeout: LongInt): ShortString;
 
