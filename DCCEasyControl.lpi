@@ -13,6 +13,8 @@
       <UseXPManifest Value="True"/>
       <XPManifest>
         <DpiAware Value="True/PM"/>
+        <TextName Value="boeckmann.dcceasycontrol"/>
+        <TextDesc Value="DCC EasyControl"/>
       </XPManifest>
       <Icon Value="0"/>
     </General>
@@ -76,6 +78,7 @@
             <Debugging>
               <GenerateDebugInfo Value="False"/>
               <RunWithoutDebug Value="True"/>
+              <DebugInfoType Value="dsDwarf3"/>
             </Debugging>
             <LinkSmart Value="True"/>
             <Options>

@@ -4,12 +4,14 @@ unit utrains;
 
 {$if 1}
 {$define COMM}
+{$define GUI}
 {$endif}
 
 interface
 
 uses
-  Classes, SysUtils, Serial;
+  Classes, SysUtils
+  {$ifdef COMM},Serial{$endif};
 
 type
 
@@ -68,7 +70,7 @@ const
 
 implementation
 
-uses uformmain;
+{$ifdef GUI}uses uformmain;{$endif}
 
 procedure TTrains.PauseCommands;
 begin
@@ -103,7 +105,7 @@ begin
     {$ENDIF}
   end;
 
-  if not Result then FormMain.SetCommError;
+  {$ifdef GUI}if not Result then FormMain.SetCommError;{$endif}
 end;
 
 function TTrains.SendCommand(cmd: String): Boolean;
@@ -145,8 +147,11 @@ begin
   for i := low(trains) to high(trains) do trains[i] := TTrain.Create;
   {$IFDEF COMM}
   serialHandle := SerOpen(port);
-  if serialHandle = 0 then raise Exception.Create('can not open serial port ' + port);
+  if serialHandle < 1 then begin
+    raise Exception.Create('can not open serial port ' + port);
+  end;
   SerSetParams(serialHandle, 9600, 8, NoneParity, 1, []);
+  SerReadlineTimeout(serialHandle, 2200);
   {$ENDIF}
 end;
 

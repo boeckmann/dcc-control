@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  ExtCtrls, StdCtrls, utrains, Types, LCLType, Buttons, uformaddress;
+  ExtCtrls, StdCtrls, utrains, Types, LCLType, Buttons;
 
 type
 
@@ -199,7 +199,28 @@ begin
     SelectNextFnGroup;
     Key := 0;
   end;
-
+  if Key = VK_UP then begin
+    tbSpeed.Position:=tbSpeed.Position + 1;
+    Key := 0;
+  end;
+  if Key = VK_DOWN then begin
+    tbSpeed.Position:=tbSpeed.Position - 1;
+    Key := 0;
+  end;
+  if Key = VK_RIGHT then begin
+    if (tbSpeed.Position = 0) and (sbBackward.Down = true) then begin
+      sbForward.Down := true;
+      ChangeDirection;
+    end;
+    Key := 0;
+  end;
+  if Key = VK_LEFT then begin
+    if (tbSpeed.Position = 0) and (sbForward.Down = true) then begin
+      sbBackward.Down := true;
+      ChangeDirection;
+    end;
+    Key := 0;
+  end;
 end;
 
 
@@ -237,10 +258,6 @@ begin
     if Key in ['p', 'P'] then begin
        FormMain.TogglePause;
     end;
-  end;
-
-  if Key = #27 then begin
-    FormMain.ReleaseEOff;
   end;
 
   if Key in ['1'..'8'] then begin

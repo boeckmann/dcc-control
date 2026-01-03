@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ComCtrls, Menus, ExtCtrls, ActnList, uformtrain, utrains, uformconfig,
-  LCLType, Buttons, inifiles;
+  ComCtrls, Menus, ExtCtrls, ActnList, utrains,
+  LCLType, Buttons, inifiles, uformtrain;
 
 type
 
@@ -43,14 +43,12 @@ type
     procedure sbPauseClick(Sender: TObject);
     procedure sbPowerClick(Sender: TObject);
   private
-    EOff : Boolean;
     trainForms: array[1..8] of TFormTrain;
     iniFile: TIniFile;
   public
     procedure SetCommError;
     procedure ActivateTrainForm(train: Integer);
     procedure ActivateEOff;
-    procedure ReleaseEOff;
     procedure ActivatePause;
     procedure ReleasePause;
     procedure TogglePause;
@@ -73,24 +71,17 @@ implementation
 procedure TFormMain.ActivateEOff;
 var i : Integer;
 begin
-  if EOff then Exit;
-  EOff := true;
-
+  sbEOff.Font.Color:=clRed;
   trains.SetTrackPower(false);
   trains.ResetSpeedAndFn;
 
   trains.PauseCommands;  { prevent sending commands to generator while }
                          { updating GUI }
 
-  sbEOff.Down := true;
-
   sbPower.Down := false;
-  sbPower.Enabled := false;
   sbPause.Down := false;
-  sbPause.Enabled := false;
 
   for i := low(trainForms) to high(trainForms) do begin
-    trainForms[i].EnableControls(false);
     trainForms[i].ResetSpeedAndFn;
   end;
 
@@ -98,55 +89,32 @@ begin
 end;
 
 
-procedure TFormMain.ReleaseEOff;
-var i : Integer;
-begin
-  if not EOff then Exit;
-  EOff := false;
-
-  sbEOff.Down := false;
-  sbPower.Enabled := true;
-  sbPause.Enabled := true;
-
-  for i := low(trainForms) to high(trainForms) do begin
-    trainForms[i].EnableControls(true);
-  end;
-end;
-
-
 procedure TFormMain.ActivatePause;
 begin
-  if not sbEOff.Down then begin
-    trains.SetEStop(true);
-    sbPause.Down := true;
-  end;
+  trains.SetEStop(true);
+  sbPause.Down := true;
 end;
 
 
 procedure TFormMain.ReleasePause;
 begin
-  if not sbEOff.Down then begin
-     trains.SetEStop(false);
-     sbPause.Down := false;
-  end;
+  trains.SetEStop(false);
+  sbPause.Down := false;
 end;
 
 
 procedure TFormMain.ActivatePower;
 begin
-  if not sbEOff.Down then begin
-     trains.SetTrackPower(true);
-     sbPower.Down := true;
-  end;
+  trains.SetTrackPower(true);
+  sbPower.Down := true;
+  sbEOff.Font.Color := clDefault;
 end;
 
 
 procedure TFormMain.ReleasePower;
 begin
-  if not sbEOff.Down then begin
-    trains.SetTrackPower(false);
-    sbPower.Down := false;
-  end;
+  trains.SetTrackPower(false);
+  sbPower.Down := false;
 end;
 
 
@@ -167,11 +135,12 @@ var
   i: integer;
   port: String;
 begin
-  EOff := false;
-
   iniFile := TIniFile.Create('settings.ini');
+  {$ifdef WINDOWS}
   port := iniFile.ReadString('COM', 'Port', '\\.\COM1');
-
+  {$else}
+  port := iniFile.ReadString('COM', 'Port', '/dev/cu.usbmodem101');
+  {$endif}
   try
     trains := TTrains.Create(port);
     trains.SetTrackPower(false);
@@ -179,6 +148,7 @@ begin
   except on
   e: Exception do begin
     Application.MessageBox(PChar(e.Message), 'Error');
+    FreeAndNil(trains);
     Application.Terminate;
     end
   end;
@@ -194,14 +164,16 @@ end;
 procedure TFormMain.FormDestroy(Sender: TObject);
 var i : Integer;
 begin
-  trains.GeneratorReset;
-  trains.SetTrackPower(false);
+  if trains <> nil then begin
+    trains.GeneratorReset;
+    trains.SetTrackPower(false);
+    FreeAndNil(trains);
+  end;
 
   for i:=low(trainForms) to high(trainForms) do begin
     FreeAndNil(trainForms[i]);
   end;
 
-  FreeAndNil(trains);
   iniFile.Destroy;
 end;
 
@@ -218,10 +190,6 @@ end;
 
 procedure TFormMain.FormKeyPress(Sender: TObject; var Key: char);
 begin
-  if Key = #27 then begin
-    ReleaseEOff;
-  end;
-
   if Key in ['s'] then begin
     TogglePower;
   end
@@ -236,19 +204,18 @@ end;
 
 procedure TFormMain.MenuItem3Click(Sender: TObject);
 begin
-  FormConfig.Show;
 end;
 
 
 procedure TFormMain.sbEOffClick(Sender: TObject);
 begin
-  if sbEOff.Down then ActivateEOff else ReleaseEOff;
+  ActivateEOff;
 end;
 
 
 procedure TFormMain.sbPauseClick(Sender: TObject);
 begin
-  if sbPower.Down then ActivatePause else ReleasePause;
+  if sbPause.Down then ActivatePause else ReleasePause;
 end;
 
 

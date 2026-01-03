@@ -1,35 +1,34 @@
 object FormMain: TFormMain
   AnchorSideRight.Side = asrBottom
   Left = 16
-  Height = 306
+  Height = 80
   Top = 36
-  Width = 1578
+  Width = 898
   AutoSize = True
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'DCC EasyControl'
-  ClientHeight = 306
-  ClientWidth = 1578
-  DesignTimePPI = 192
+  ClientHeight = 80
+  ClientWidth = 898
   KeyPreview = True
   Menu = MainMenu1
+  LCLVersion = '4.5.0.0'
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnKeyPress = FormKeyPress
-  LCLVersion = '3.2.0.0'
   object BtnT1: TButton
     Tag = 1
     AnchorSideLeft.Control = sbPause
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = Owner
     AnchorSideBottom.Control = StatusBar1
-    Left = 444
-    Height = 42
-    Top = 16
-    Width = 87
+    Left = 222
+    Height = 26
+    Top = 8
+    Width = 56
     AutoSize = True
-    BorderSpacing.Around = 16
+    BorderSpacing.Around = 8
     Caption = 'Pult 1'
     ParentFont = False
     TabOrder = 0
@@ -42,12 +41,12 @@ object FormMain: TFormMain
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = Owner
     AnchorSideRight.Control = BtnT3
-    Left = 547
-    Height = 42
-    Top = 16
-    Width = 87
+    Left = 286
+    Height = 26
+    Top = 8
+    Width = 57
     AutoSize = True
-    BorderSpacing.Around = 16
+    BorderSpacing.Around = 8
     Caption = 'Pult 2'
     ParentFont = False
     TabOrder = 3
@@ -59,12 +58,12 @@ object FormMain: TFormMain
     AnchorSideLeft.Control = BtnT2
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = Owner
-    Left = 650
-    Height = 42
-    Top = 16
-    Width = 87
+    Left = 351
+    Height = 26
+    Top = 8
+    Width = 58
     AutoSize = True
-    BorderSpacing.Around = 16
+    BorderSpacing.Around = 8
     Caption = 'Pult 3'
     ParentFont = False
     TabOrder = 1
@@ -76,12 +75,12 @@ object FormMain: TFormMain
     AnchorSideLeft.Control = BtnT3
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = Owner
-    Left = 753
-    Height = 42
-    Top = 16
-    Width = 87
+    Left = 417
+    Height = 26
+    Top = 8
+    Width = 58
     AutoSize = True
-    BorderSpacing.Around = 16
+    BorderSpacing.Around = 8
     Caption = 'Pult 4'
     ParentFont = False
     TabOrder = 7
@@ -89,21 +88,18 @@ object FormMain: TFormMain
     OnClick = ButtonTrainClick
   end
   object StatusBar1: TStatusBar
-    AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = sbPower
     AnchorSideTop.Side = asrBottom
-    AnchorSideRight.Control = Owner
-    AnchorSideBottom.Control = Owner
     Left = 0
-    Height = 182
-    Top = 124
-    Width = 1578
+    Height = 18
+    Top = 62
+    Width = 898
     Anchors = [akTop, akLeft, akRight, akBottom]
-    BorderSpacing.Top = 16
+    BorderSpacing.Top = 8
     Panels = <    
       item
         Text = 'OK'
-        Width = 100
+        Width = 50
       end>
     ParentFont = False
     SimplePanel = False
@@ -113,12 +109,12 @@ object FormMain: TFormMain
     AnchorSideLeft.Control = BtnT4
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = Owner
-    Left = 856
-    Height = 42
-    Top = 16
-    Width = 87
+    Left = 483
+    Height = 26
+    Top = 8
+    Width = 58
     AutoSize = True
-    BorderSpacing.Around = 16
+    BorderSpacing.Around = 8
     Caption = 'Pult 5'
     ParentFont = False
     TabOrder = 6
@@ -130,12 +126,12 @@ object FormMain: TFormMain
     AnchorSideLeft.Control = BtnT5
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = Owner
-    Left = 959
-    Height = 42
-    Top = 16
-    Width = 87
+    Left = 549
+    Height = 26
+    Top = 8
+    Width = 58
     AutoSize = True
-    BorderSpacing.Around = 16
+    BorderSpacing.Around = 8
     Caption = 'Pult 6'
     ParentFont = False
     TabOrder = 5
@@ -147,12 +143,12 @@ object FormMain: TFormMain
     AnchorSideLeft.Control = BtnT6
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = Owner
-    Left = 1062
-    Height = 42
-    Top = 16
-    Width = 87
+    Left = 615
+    Height = 26
+    Top = 8
+    Width = 57
     AutoSize = True
-    BorderSpacing.Around = 16
+    BorderSpacing.Around = 8
     Caption = 'Pult 7'
     ParentFont = False
     TabOrder = 4
@@ -164,13 +160,13 @@ object FormMain: TFormMain
     AnchorSideLeft.Control = BtnT7
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = Owner
-    Left = 1165
-    Height = 42
-    Top = 16
-    Width = 87
+    Left = 680
+    Height = 26
+    Top = 8
+    Width = 58
     AutoSize = True
-    BorderSpacing.Top = 16
-    BorderSpacing.Bottom = 8
+    BorderSpacing.Top = 8
+    BorderSpacing.Bottom = 4
     Caption = 'Pult 8'
     ParentFont = False
     TabOrder = 2
@@ -180,13 +176,13 @@ object FormMain: TFormMain
   object sbPower: TSpeedButton
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner
-    Left = 16
-    Height = 92
-    Top = 16
-    Width = 212
+    Left = 8
+    Height = 46
+    Top = 8
+    Width = 106
     AllowAllUp = True
-    BorderSpacing.Left = 16
-    BorderSpacing.Top = 16
+    BorderSpacing.Left = 8
+    BorderSpacing.Top = 8
     Caption = 'Gleisspeisung'
     GroupIndex = 2
     Images = ImageList1
@@ -200,13 +196,13 @@ object FormMain: TFormMain
     AnchorSideLeft.Control = sbPower
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = Owner
-    Left = 244
-    Height = 92
-    Top = 16
-    Width = 184
+    Left = 122
+    Height = 46
+    Top = 8
+    Width = 92
     AllowAllUp = True
-    BorderSpacing.Left = 16
-    BorderSpacing.Top = 16
+    BorderSpacing.Left = 8
+    BorderSpacing.Top = 8
     Caption = 'Pause'
     GroupIndex = 1
     Images = ImageList1
@@ -220,25 +216,24 @@ object FormMain: TFormMain
     AnchorSideLeft.Control = BtnT8
     AnchorSideLeft.Side = asrBottom
     AnchorSideRight.Control = Owner
-    Left = 1268
-    Height = 92
-    Top = 16
-    Width = 288
+    Left = 746
+    Height = 46
+    Top = 8
+    Width = 144
     AllowAllUp = True
-    BorderSpacing.Left = 16
-    BorderSpacing.Right = 16
+    BorderSpacing.Left = 8
+    BorderSpacing.Right = 8
     Caption = 'Notaus'
-    Font.Height = -53
-    GroupIndex = 3
+    Font.Height = -27
     Images = ImageList2
     ImageIndex = 0
     ImageWidth = 32
-    OnClick = sbEOffClick
     ParentFont = False
+    OnClick = sbEOffClick
   end
   object MainMenu1: TMainMenu
-    Left = 1152
-    Top = 80
+    Left = 576
+    Top = 40
     object MenuItem1: TMenuItem
       Caption = 'Datei'
       object MenuItem2: TMenuItem
@@ -254,8 +249,8 @@ object FormMain: TFormMain
   end
   object ImageList1: TImageList
     Scaled = True
-    Left = 889
-    Top = 88
+    Left = 445
+    Top = 44
     Bitmap = {
       4C7A0500000010000000100000009E0300000000000078DAE556B14E1B4110DD
       28516AEA54B60C850B0C521C44652EF420417EC08234511A4A0489744D3E2414
@@ -339,8 +334,8 @@ object FormMain: TFormMain
   end
   object ImageList2: TImageList
     Scaled = True
-    Left = 780
-    Top = 95
+    Left = 390
+    Top = 48
     Bitmap = {
       4C7A010000001000000010000000670100000000000078DA9553BD4A0341105E
       938B247A680A8B2029126D8E33A0608A280AA9CC0BD8290A3E81AFA0585EAD20
