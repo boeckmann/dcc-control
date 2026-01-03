@@ -11,7 +11,7 @@ interface
 
 uses
   Classes, SysUtils
-  {$ifdef COMM},Serial{$endif};
+  {$ifdef COMM}{$ifdef UNIX},SerialUnix{$else},Serial{$endif},SerialAux{$endif};
 
 type
 
