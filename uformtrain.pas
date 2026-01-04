@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, ComCtrls,
-  ExtCtrls, StdCtrls, utrains, Types, LCLType, Buttons;
+  ExtCtrls, StdCtrls, utrains, Types, LCLType, Buttons, IniPropStorage;
 
 type
 
@@ -47,6 +47,7 @@ type
     procedure FormActivate(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDeactivate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure FormHide(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure FormKeyPress(Sender: TObject; var Key: char);
@@ -60,7 +61,8 @@ type
     procedure sbForwardClick(Sender: TObject);
     procedure sbFxClick(Sender: TObject);
     procedure tbSpeedChange(Sender: TObject);
-
+    procedure LoadFromIni;
+    procedure SaveToIni;
     constructor Create(AOwner: TComponent; addr: Integer); overload;
   private
     formNum: Integer;
@@ -160,8 +162,6 @@ end;
 
 procedure TFormTrain.FormCreate(Sender: TObject);
 begin
-  Left := ScaleDesignToForm(16) + (addr-1) * (ScaleDesignToForm(Width + 16));
-  if Left + ScaleDesignToForm(Width) > screen.Width then Left := screen.Width - ScaleDesignToForm(Width);
   Caption:='Bedienpult ' + IntToStr(addr);
   lblTrain.Caption:='#' + IntToStr(addr);
 end;
@@ -171,6 +171,11 @@ procedure TFormTrain.FormDeactivate(Sender: TObject);
 begin
   Color := clDefault;
   lblTrain.Font.Color := clGray;
+end;
+
+procedure TFormTrain.FormDestroy(Sender: TObject);
+begin
+  SaveToIni;
 end;
 
 
@@ -282,8 +287,11 @@ end;
 
 
 procedure TFormTrain.FormShow(Sender: TObject);
+var s: String;
 begin
+  s:=IntToStr(Left)+','+IntToStr(Width);
   if not alreadyShown then begin
+    LoadFromIni;
     trains.SetActive(addr, true);
     trains.SetDirection(addr, Forward);
     trains.SetFunction(addr, 0, false);
@@ -386,6 +394,23 @@ begin
   trains.SetDCC14(addr, cbDCC14.Checked);
 end;
 
+procedure TFormTrain.LoadFromIni;
+var NewLeft, NewTop: Integer;
+begin
+  NewLeft := iniFile.ReadInteger('FormTrain'+IntToStr(addr), 'Left', -1);
+  NewTop := iniFile.ReadInteger('FormTrain'+IntToStr(addr), 'Top', -1);
+  if NewTop >= 0 then Top := NewTop;
+  if NewLeft >= 0 then Left := NewLeft else begin
+    Left := 16 + (addr-1) * (Width + 16);
+    if Left + Width >= screen.Width then Left := screen.Width - Width;
+  end;
+end;
+
+procedure TFormTrain.SaveToIni;
+begin
+  iniFile.WriteInteger('FormTrain'+IntToStr(addr), 'Left', Left);
+  iniFile.WriteInteger('FormTrain'+IntToStr(addr), 'Top', Top);
+end;
 
 end.
 

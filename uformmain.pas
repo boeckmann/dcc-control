@@ -44,7 +44,7 @@ type
     procedure sbPowerClick(Sender: TObject);
   private
     trainForms: array[1..8] of TFormTrain;
-    iniFile: TIniFile;
+    comPort: String;
   public
     procedure SetCommError;
     procedure ActivateTrainForm(train: Integer);
@@ -60,13 +60,15 @@ type
 
 var
   FormMain: TFormMain;
+  iniFile: TIniFile;
+const
+  iniFileName: String = 'DCCEasyControl.ini';
 
 implementation
 
 {$R *.lfm}
 
 { TFormMain }
-
 
 procedure TFormMain.ActivateEOff;
 var i : Integer;
@@ -133,16 +135,20 @@ end;
 procedure TFormMain.FormCreate(Sender: TObject);
 var
   i: integer;
-  port: String;
 begin
-  iniFile := TIniFile.Create('settings.ini');
+  if not ForceDirectories(GetAppConfigDir(false)) then begin
+    raise Exception.Create('unable to open or create application configuration path');
+    Halt(1);
+  end;
+  iniFileName := ConcatPaths([GetAppConfigDir(false), 'DCCEasyControl.ini']);
+  iniFile := TIniFile.Create(iniFileName);
   {$ifdef WINDOWS}
-  port := iniFile.ReadString('COM', 'Port', '\\.\COM1');
+  comPort := iniFile.ReadString('COM', 'Port', '\\.\COM1');
   {$else}
-  port := iniFile.ReadString('COM', 'Port', '/dev/cu.usbmodem101');
+  comPort := iniFile.ReadString('COM', 'Port', '/dev/cu.usbmodem101');
   {$endif}
   try
-    trains := TTrains.Create(port);
+    trains := TTrains.Create(comPort);
     trains.SetTrackPower(false);
     trains.GeneratorReset;
   except on
@@ -157,7 +163,6 @@ begin
   for i:=low(trainForms) to high(trainForms) do begin
     trainForms[i] := TFormTrain.Create(self, i);
   end;
-
 end;
 
 

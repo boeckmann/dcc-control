@@ -1,7 +1,7 @@
 object FormTrain: TFormTrain
-  Left = 402
+  Left = 340
   Height = 266
-  Top = 337
+  Top = 158
   Width = 302
   AutoSize = True
   BorderStyle = bsDialog
@@ -12,6 +12,7 @@ object FormTrain: TFormTrain
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnDeactivate = FormDeactivate
+  OnDestroy = FormDestroy
   OnHide = FormHide
   OnKeyDown = FormKeyDown
   OnKeyPress = FormKeyPress
